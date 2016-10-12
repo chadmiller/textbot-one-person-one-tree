@@ -1,6 +1,12 @@
 """How we send the collected user answers to the City of Orlando. We use a
 terrible web form."""
 
+class FailedToSend(Exception): pass
+
+import logging as logging_mod
+
+logger = logging_mod.getLogger(__name__)
+
 
 def patch_form_input(self, data):
     exceptions = {}
@@ -41,14 +47,21 @@ def send(url, form_source):
 
     form_ = page.soup.select_one("form")
 
-    form_["action"] = "http://requestb.in/og97erog"
     del form_.find("input", { "name": "Field24" })["checked"]
 
     form = mechanicalsoup.Form(form_)
 
     form.input(form_source)
+    if "@example." in form_source["Field22"]:
+        logger.warn("Redirecting opot req to black hole instead of real site.")
+        form_["action"] = "http://httpbin.org/status/200"
 
-    result = br.submit(form_, url="http://requestb.in/12wl6fu1")
+    result = br.submit(form_)
+
+    if result.status_code != 200:
+        logger.error("failed to deliver message. HTTP status %s", result.status_code)
+        logger.error("%r", result.content)
+        raise FailedToSend(result.status_code)
 
 
 if __name__ == "__main__":
