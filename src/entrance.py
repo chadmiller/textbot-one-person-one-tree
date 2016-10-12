@@ -91,7 +91,8 @@ def receive(caller_number, incoming_message, initial_state_info=None, delivery=d
             outgoing_messages.append("I couldn't send it right now. I'm saving your answers. Send \"retry\" again later.")
         else:
             conversation_ends_now = True
-            outgoing_messages.append("Done! Someone from the city should email/call. 🌲🐝  Enjoy your tree!")
+            outgoing_messages.append("Done! Check your email for a timeline and information about your responsibilities.")
+            outgoing_messages.append("🌲🐝  Enjoy your tree!")
 
         with suppress(models.TreeRequestState.DoesNotExist):
             models.TreeRequestState.objects.filter(caller_number=caller_number).delete()
