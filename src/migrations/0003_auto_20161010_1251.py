@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('opot', '0002_auto_20161007_2137'),
+        ('textbot_one_person_one_tree', '0002_auto_20161007_2137'),
     ]
 
     operations = [
