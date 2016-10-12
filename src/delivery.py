@@ -52,11 +52,15 @@ def send(url, form_source):
     form = mechanicalsoup.Form(form_)
 
     form.input(form_source)
-    if "@example." in form_source["Field22"]:
-        logger.warn("Redirecting opot req to black hole instead of real site.")
+    if "success@example." in form_source["Field22"]:
+        logger.warn("Forcing success of delivery")
         form_["action"] = "http://httpbin.org/status/200"
+    if "failure@example." in form_source["Field22"]:
+        logger.warn("Forcing failure of delivery")
+        form_["action"] = "http://httpbin.org/status/500"
 
     result = br.submit(form_)
+    logger.warn("TODO: look for errors in page content: %r", result.content)
 
     if result.status_code != 200:
         logger.error("failed to deliver message. HTTP status %s", result.status_code)

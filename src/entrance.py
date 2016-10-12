@@ -86,7 +86,8 @@ def receive(caller_number, incoming_message, initial_state_info=None, delivery=d
         url, data = record.form_data(caller_number)
         try:
             delivery.send(url, data)
-        except Exception:
+        except Exception as exc:
+            logger.exception("Failed to send.")
             outgoing_messages.append("I couldn't send it right now. I'm saving your answers. Send \"retry\" again later.")
         else:
             conversation_ends_now = True
