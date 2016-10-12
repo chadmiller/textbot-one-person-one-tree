@@ -6,7 +6,7 @@ setup(name='textbot_one_person_one_tree',
     version='1.0',
     description='Textbot Privacy Policy',
     author='Chad Miller',
-    packages=['textbot_one_person_one_tree'],
+    packages=['textbot_one_person_one_tree', 'textbot_one_person_one_tree.migrations'],
     package_dir={ "textbot_one_person_one_tree": "src" },
     )
 
